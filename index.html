@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum AI</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Using Google Fonts to approximate Google Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Material Symbols Outlined -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-top">
+                <button class="nav-btn menu-btn" title="Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <div class="new-chat-container">
+                    <button class="new-chat-btn" id="newChatBtn">
+                        <span class="material-symbols-outlined plus-icon">add</span>
+                        <span class="btn-text">New chat</span>
+                    </button>
+                    <button class="nav-btn theme-btn" id="themeToggleBtn" title="Toggle theme">
+                        <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
+                    </button>
+                </div>
+
+                <div class="recent-section">
+                    <p class="section-title">Recent</p>
+                    <div class="recent-list" id="recentChatsList">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <button class="nav-btn" id="helpBtn">
+                    <span class="material-symbols-outlined">help</span>
+                    <span class="nav-text">Help</span>
+                </button>
+                <button class="nav-btn" id="activityBtn">
+                    <span class="material-symbols-outlined">history</span>
+                    <span class="nav-text">Activity</span>
+                </button>
+                <button class="nav-btn" id="settingsBtn">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="nav-text">Settings</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Chat Interface -->
+        <main class="main-content" id="mainContent">
+            <!-- Header section of chat -->
+            <header class="chat-header">
+                <div class="model-dropdown" id="topModelDropdownBtn">
+                    <h2>Quantum AI</h2>
+                    <span class="material-symbols-outlined arrow">arrow_drop_down</span>
+                </div>
+                <!-- Profile Section -->
+                <div class="header-right-actions">
+                    <div class="pro-badge">
+                        <div class="quantum-sparkle"></div>
+                        <span>Quantum AI Pro</span>
+                    </div>
+                    <div class="user-profile-container">
+                        <img src="https://ui-avatars.com/api/?name=User&background=333&color=fff&rounded=true"
+                            alt="Profile" class="avatar" id="userAvatar">
+                    </div>
+            </header>
+
+            <!-- Scrollable chat thread area -->
+            <div class="chat-area">
+
+                <!-- Welcome/Greeting State (visible initially when empty) -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="greeting">
+                        <span class="hello-text">Hello,</span>
+                        <span class="name-text">User</span>
+                    </div>
+                    <h1 class="prompt-text">How can I help you today?</h1>
+
+                    <div class="suggestion-cards">
+                        <div class="suggestion-card">
+                            <p>Draft a polite email to decline an invitation</p>
+                            <span class="material-symbols-outlined card-icon">draw</span>
+                        </div>
+                        <div class="suggestion-card">
+                            <p>Write an outline for a presentation on machine learning</p>
+                            <span class="material-symbols-outlined card-icon">lightbulb</span>
+                        </div>
+                        <div class="suggestion-card">
+                            <p>Help me understand a complex topic like quantum computing</p>
+                            <span class="material-symbols-outlined card-icon">school</span>
+                        </div>
+                        <div class="suggestion-card">
+                            <p>Plan a 3-day trip to Kyoto, Japan</p>
+                            <span class="material-symbols-outlined card-icon">flight_takeoff</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Thread (Hidden initially) -->
+                <div class="chat-thread" id="chatThread" style="display: none;">
+                    <!-- Messages will be injected here via JS -->
+                </div>
+
+            </div>
+
+            <!-- Input Area Bottom Fix -->
+            <div class="input-container-wrapper">
+                <div class="input-container">
+                    <!-- Image upload button removed entirely as per request -->
+                    <!-- Simulated mic icon often seen in Quantum AI -->
+                    <button class="input-action-btn" title="Use microphone">
+                        <span class="material-symbols-outlined">mic</span>
+                    </button>
+
+                    <div class="input-box">
+                        <div class="input-wrapper">
+                            <textarea id="promptInput" rows="1" placeholder="Enter a prompt here"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="input-action-btn submit-btn" id="sendBtn" title="Submit">
+                        <span class="material-symbols-outlined send-icon">send</span>
+                    </button>
+                </div>
+
+                <p class="footer-disclaimer">
+                    Quantum AI can make mistakes. Check important info.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Open Source Backend Settings</h3>
+                <button class="nav-btn close-modal-btn modal-close-btn">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">Connect this UI to a real open-source AI model by providing an API key from <a
+                        href="https://console.groq.com/keys" target="_blank">Groq</a>.</p>
+                <div class="input-group">
+                    <label for="apiKeyInput">Groq API Key:</label>
+                    <input type="password" id="apiKeyInput" placeholder="gsk_...">
+                </div>
+                <div class="input-group">
+                    <label for="modelSelect">Select Model:</label>
+                    <select id="modelSelect">
+                        <option value="llama-3.3-70b-versatile">Meta Llama 3.3 70B (Recommended)</option>
+                        <option value="llama-3.1-8b-instant">Meta Llama 3.1 8B (Fast)</option>
+                        <option value="gemma2-9b-it">Google Gemma 2 9B</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="save-settings-btn" id="saveSettingsBtn">Save & Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="helpModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Help Center</h3>
+                <button class="nav-btn close-modal-btn modal-close-btn">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">Welcome to the Quantum AI replica interface.</p>
+                <ul class="help-list">
+                    <li><strong>Enter</strong> to send a message.</li>
+                    <li><strong>Shift + Enter</strong> for a new line.</li>
+                    <li>Toggle Light/Dark mode using the sun/moon icon.</li>
+                    <li>Add your API key via Settings to activate true AI responses.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Modal -->
+    <div class="modal-overlay" id="activityModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Recent Activity Log</h3>
+                <button class="nav-btn close-modal-btn modal-close-btn">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body activity-log" id="activityLogContent">
+                <!-- Populated by JS -->
+                <p class="modal-desc">Activity feed initialized.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple loading state template for JS injection -->
+    <template id="loadingTemplate">
+        <div class="chat-message bot loading-state">
+            <div class="bot-avatar quantum-sparkle-spin"></div>
+            <div class="loading-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
