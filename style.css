@@ -104,6 +104,19 @@ body {
     margin-right: 0;
 }
 
+.sidebar.collapsed .sidebar-bottom .nav-btn {
+    width: 44px;
+    /* Slightly smaller for bottom items in Gemini */
+    height: 44px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.sidebar.collapsed .sidebar-bottom .nav-text {
+    display: none;
+}
+
 .nav-btn {
     background: transparent;
     border: none;
@@ -156,9 +169,25 @@ body {
     margin-right: 8px;
 }
 
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar-bottom {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .recent-section {
     flex-grow: 1;
     overflow-y: auto;
+    margin-right: -12px;
+    padding-right: 12px;
 }
 
 .section-title {
@@ -290,17 +319,12 @@ body {
     /* Room for the options button */
 }
 
-.sidebar-bottom {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
 .sidebar-bottom .nav-btn {
     width: auto;
     border-radius: 50px;
     justify-content: flex-start;
     padding: 10px 12px;
+    height: 40px;
 }
 
 .nav-text {
