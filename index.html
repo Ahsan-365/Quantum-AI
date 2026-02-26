@@ -32,9 +32,6 @@
                         <span class="material-symbols-outlined plus-icon">add</span>
                         <span class="btn-text">New chat</span>
                     </button>
-                    <button class="nav-btn theme-btn" id="themeToggleBtn" title="Toggle theme">
-                        <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
-                    </button>
                 </div>
 
                 <div class="recent-section">
@@ -57,6 +54,10 @@
                 <button class="nav-btn" id="settingsBtn">
                     <span class="material-symbols-outlined">settings</span>
                     <span class="nav-text">Settings</span>
+                </button>
+                <button class="nav-btn theme-btn" id="themeToggleBtn" title="Toggle theme">
+                    <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
+                    <span class="nav-text">Theme</span>
                 </button>
             </div>
         </nav>
@@ -153,18 +154,13 @@
     <div class="modal-overlay" id="settingsModal" style="display: none;">
         <div class="modal">
             <div class="modal-header">
-                <h3>Open Source Backend Settings</h3>
+                <h3>Quantum AI Settings</h3>
                 <button class="nav-btn close-modal-btn modal-close-btn">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p class="modal-desc">Connect this UI to a real open-source AI model by providing an API key from <a
-                        href="https://console.groq.com/keys" target="_blank">Groq</a>.</p>
-                <div class="input-group">
-                    <label for="apiKeyInput">Groq API Key:</label>
-                    <input type="password" id="apiKeyInput" placeholder="gsk_...">
-                </div>
+                <p class="modal-desc">Configure your Quantum AI experience.</p>
                 <div class="input-group">
                     <label for="modelSelect">Select Model:</label>
                     <select id="modelSelect">
@@ -175,7 +171,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="save-settings-btn" id="saveSettingsBtn">Save & Connect</button>
+                <button class="save-settings-btn" id="saveSettingsBtn">Save Settings</button>
             </div>
         </div>
     </div>

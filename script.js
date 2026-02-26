@@ -4,6 +4,10 @@ markedScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
 document.head.appendChild(markedScript);
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ⚠️ HARDCODED API KEY ⚠️
+    // Replace the string below with your actual Groq API key.
+    const GROQ_API_KEY = "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";
+
     const promptInput = document.getElementById('promptInput');
     const sendBtn = document.getElementById('sendBtn');
     const welcomeScreen = document.getElementById('welcomeScreen');
@@ -26,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const allModals = document.querySelectorAll('.modal-overlay');
     const closeBtns = document.querySelectorAll('.modal-close-btn');
     const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-    const apiKeyInput = document.getElementById('apiKeyInput');
     const modelSelect = document.getElementById('modelSelect');
 
     // UI Controls
@@ -65,18 +68,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadStoredSettings() {
-        if (localStorage.getItem('groqApiKey')) {
-            apiKeyInput.value = localStorage.getItem('groqApiKey');
-        }
         if (localStorage.getItem('groqModel')) {
             modelSelect.value = localStorage.getItem('groqModel');
-            updateHeaderModelDisplay();
+        } else {
+            modelSelect.value = "llama-3.3-70b-versatile";
         }
+        updateHeaderModelDisplay();
     }
 
     function updateHeaderModelDisplay() {
         const modelName = modelSelect.options[modelSelect.selectedIndex].text;
-        topModelDropdownBtn.querySelector('h2').textContent = `Quantum AI (${modelName.split(' ')[2] || 'Fast'})`;
+
+        // Extract the short name (e.g. "Meta Llama 3.3 70B (Recommended)" -> "70B")
+        let shortName = "Fast";
+        if (modelName.includes("70B")) shortName = "70B";
+        else if (modelName.includes("8B")) shortName = "8B";
+        else if (modelName.includes("9B")) shortName = "9B";
+
+        topModelDropdownBtn.querySelector('h2').textContent = `Quantum AI (${shortName})`;
     }
 
     // --- Modal Logic ---
@@ -106,7 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Close chat options if clicked outside
-        if (!e.target.closest('.chat-options-btn') && !e.target.closest('.chat-options-menu')) {
+        const isOptionsBtn = e.target.closest('.chat-options-btn');
+        const isOptionsMenu = e.target.closest('.chat-options-menu');
+
+        if (!isOptionsBtn && !isOptionsMenu) {
             document.querySelectorAll('.chat-options-menu').forEach(menu => {
                 menu.classList.remove('active');
             });
@@ -114,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     saveSettingsBtn.addEventListener('click', () => {
-        localStorage.setItem('groqApiKey', apiKeyInput.value.trim());
         localStorage.setItem('groqModel', modelSelect.value);
         settingsModal.style.display = 'none';
 
@@ -227,18 +238,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showLoadingState();
 
-        const apiKey = localStorage.getItem('groqApiKey');
         const model = localStorage.getItem('groqModel') || "llama-3.3-70b-versatile";
 
-        if (!apiKey) {
-            removeLoadingState();
-            addBotMessage("<p>⚠️ Please enter your free Groq API key in the Settings menu (bottom left) to connect to open-source models.</p>");
-            chatHistory.pop(); // Remove prompt since we failed to send
-            return;
-        }
-
         try {
-            const responseText = await fetchFromGroq(chatHistory, apiKey, model);
+            const responseText = await fetchFromGroq(chatHistory, GROQ_API_KEY, model);
             removeLoadingState();
 
             // Render markdown using Marked.js if loaded, else fallback
