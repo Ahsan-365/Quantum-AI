@@ -153,6 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Remove active state from sidebar
         document.querySelectorAll('.recent-item').forEach(wrapper => wrapper.classList.remove('active'));
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('mobile-open');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+        }
     }
 
     themeToggleBtn.addEventListener('click', () => {
@@ -596,7 +602,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (window.innerWidth <= 768) {
-            document.querySelector('.sidebar').style.transform = 'translateX(-100%)';
+            sidebar.classList.remove('mobile-open');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
         }
     }
 
