@@ -40,9 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const recentChatsList = document.getElementById('recentChatsList');
     const sidebar = document.querySelector('.sidebar');
     const menuBtn = document.querySelector('.menu-btn');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
     // Dummy buttons (for toasts)
-    const dummyButtons = document.querySelectorAll('.input-action-btn:not(#sendBtn)');
+    const dummyButtons = document.querySelectorAll('.input-action-btn:not(#sendBtn):not(#micBtn)');
 
     // Conversation State Trackers
     let currentChatId = null;
@@ -165,14 +167,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Sidebar toggle for desktop/mobile
-    menuBtn.addEventListener('click', () => {
+    function toggleSidebar() {
         if (window.innerWidth <= 768) {
-            const transform = sidebar.style.transform;
-            sidebar.style.transform = (transform === 'translateX(0%)') ? 'translateX(-100%)' : 'translateX(0%)';
+            sidebar.classList.toggle('mobile-open');
+            if (sidebar.classList.contains('mobile-open')) {
+                sidebarOverlay.classList.add('active');
+            } else {
+                sidebarOverlay.classList.remove('active');
+            }
         } else {
             sidebar.classList.toggle('collapsed');
         }
-    });
+    }
+
+    menuBtn.addEventListener('click', toggleSidebar);
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', toggleSidebar);
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+        });
+    }
 
     // Wire up remaining dummy buttons to show a toast
     dummyButtons.forEach(btn => {
@@ -184,6 +202,89 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // --- Microphone / Speech Recognition ---
+    const micBtn = document.getElementById('micBtn');
+    let recognition = null;
+    let isRecording = false;
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        recognition.onstart = function () {
+            isRecording = true;
+            micBtn.classList.add('active-mic');
+            showToast('Listening...');
+        };
+
+        recognition.onresult = function (event) {
+            let interimTranscript = '';
+            let finalTranscript = '';
+
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
+            }
+
+            // Append or replace the text in the prompt input
+            if (finalTranscript) {
+                promptInput.value = promptInput.value + (promptInput.value ? ' ' : '') + finalTranscript;
+            } else if (interimTranscript) {
+                // Optionally show interim transcript somehow, but for simplicity we only append finals
+                // Or we update value momentarily if we track original value
+            }
+
+            // Trigger input event to resize textarea and active SEND btn
+            promptInput.dispatchEvent(new Event('input'));
+        };
+
+        recognition.onerror = function (event) {
+            console.error('Speech recognition error', event.error);
+            stopRecording();
+            if (event.error === 'not-allowed') {
+                showToast('Microphone access denied.');
+            } else if (event.error !== 'aborted') {
+                showToast('Error listening to microphone.');
+            }
+        };
+
+        recognition.onend = function () {
+            stopRecording();
+        };
+    }
+
+    function stopRecording() {
+        if (isRecording && recognition) {
+            recognition.stop();
+        }
+        isRecording = false;
+        micBtn.classList.remove('active-mic');
+    }
+
+    if (micBtn) {
+        micBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!recognition) {
+                showToast('Speech recognition not supported in this browser.');
+                return;
+            }
+            if (isRecording) {
+                stopRecording();
+            } else {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        });
+    }
 
     promptInput.addEventListener('input', function () {
         this.style.height = 'auto';

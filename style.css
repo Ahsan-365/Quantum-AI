@@ -384,6 +384,35 @@ body {
     height: 64px;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    /* hidden on desktop */
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
 .model-dropdown {
     display: flex;
     align-items: center;
@@ -792,6 +821,41 @@ body {
     font-size: 24px;
 }
 
+/* Microphone active state */
+.active-mic {
+    background-color: rgba(217, 101, 112, 0.1) !important;
+}
+
+.active-mic .material-symbols-outlined {
+    color: #ea4335 !important;
+    animation: pulseMic 1.5s infinite;
+}
+
+@keyframes pulseMic {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+body.light-theme .active-mic {
+    background-color: rgba(229, 57, 53, 0.1) !important;
+}
+
+body.light-theme .active-mic .material-symbols-outlined {
+    color: #e53935 !important;
+}
+
 .input-box {
     flex: 1;
     display: flex;
@@ -841,6 +905,10 @@ textarea#promptInput::placeholder {
 
 /* Responsiveness */
 @media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+    }
+
     .header-right-actions {
         gap: 8px;
     }
@@ -860,13 +928,44 @@ textarea#promptInput::placeholder {
     }
 
     .sidebar {
-        position: absolute;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
         transform: translateX(-100%);
         z-index: 100;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0%);
     }
 
     .suggestion-cards {
         grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .suggestion-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .greeting {
+        font-size: 40px;
+    }
+
+    .prompt-text {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .chat-header {
+        padding: 12px;
+    }
+
+    .chat-area {
+        padding: 0 12px;
     }
 }
 

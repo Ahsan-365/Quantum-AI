@@ -20,6 +20,7 @@
 </head>
 
 <body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
@@ -66,9 +67,14 @@
         <main class="main-content" id="mainContent">
             <!-- Header section of chat -->
             <header class="chat-header">
-                <div class="model-dropdown" id="topModelDropdownBtn">
-                    <h2>Quantum AI</h2>
-                    <span class="material-symbols-outlined arrow">arrow_drop_down</span>
+                <div class="header-left">
+                    <button class="nav-btn mobile-menu-btn" id="mobileMenuBtn" title="Menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="model-dropdown" id="topModelDropdownBtn">
+                        <h2>Quantum AI</h2>
+                        <span class="material-symbols-outlined arrow">arrow_drop_down</span>
+                    </div>
                 </div>
                 <!-- Profile Section -->
                 <div class="header-right-actions">
@@ -125,7 +131,7 @@
                 <div class="input-container">
                     <!-- Image upload button removed entirely as per request -->
                     <!-- Simulated mic icon often seen in Quantum AI -->
-                    <button class="input-action-btn" title="Use microphone">
+                    <button class="input-action-btn" id="micBtn" title="Use microphone">
                         <span class="material-symbols-outlined">mic</span>
                     </button>
 
