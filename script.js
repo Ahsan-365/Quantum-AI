@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Mobile Viewport Height Fix
+    const setAppHeight = () => {
+        document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    };
+    window.addEventListener('resize', setAppHeight);
+    setAppHeight();
+
     // ⚠️ HARDCODED API KEY ⚠️
     const GROQ_API_KEY = "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";
 
