@@ -3,103 +3,107 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Quantum AI</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- Using Google Fonts to approximate Google Sans -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Roboto:wght@400;500&display=swap"
         rel="stylesheet">
-
-    <!-- Material Symbols Outlined -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Code Highlighting and Math -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 </head>
 
 <body>
+
+    <!-- Overlay for mobile sidebar -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    <div class="app-container">
-        <!-- Sidebar Navigation -->
-        <nav class="sidebar">
-            <div class="sidebar-top">
-                <button class="nav-btn menu-btn" title="Menu">
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="icon-btn sidebar-toggle-desktop" title="Collapse menu">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
-                <div class="new-chat-container">
-                    <button class="new-chat-btn" id="newChatBtn">
-                        <span class="material-symbols-outlined plus-icon">add</span>
-                        <span class="btn-text">New chat</span>
-                    </button>
-                </div>
+            </div>
 
-                <div class="recent-section">
-                    <p class="section-title">Recent</p>
-                    <div class="recent-list" id="recentChatsList">
+            <div class="new-chat-wrapper">
+                <button class="new-chat-btn" id="newChatBtn">
+                    <span class="material-symbols-outlined plus-icon">add</span>
+                    <span class="text">New chat</span>
+                </button>
+            </div>
 
-                    </div>
+            <div class="recent-chats">
+                <h3 class="section-title">Recent</h3>
+                <div class="chat-list" id="recentChatsList">
+                    <!-- JS renders history here -->
                 </div>
             </div>
 
-            <div class="sidebar-bottom">
-                <button class="nav-btn" id="helpBtn">
-                    <span class="material-symbols-outlined">help</span>
-                    <span class="nav-text">Help</span>
+            <div class="sidebar-footer">
+                <button class="nav-item" id="helpBtn">
+                    <span class="material-symbols-outlined nav-icon">help</span>
+                    <span class="text">Help</span>
                 </button>
-                <button class="nav-btn" id="activityBtn">
-                    <span class="material-symbols-outlined">history</span>
-                    <span class="nav-text">Activity</span>
+                <button class="nav-item" id="activityBtn">
+                    <span class="material-symbols-outlined nav-icon">history</span>
+                    <span class="text">Activity</span>
                 </button>
-                <button class="nav-btn" id="settingsBtn">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span class="nav-text">Settings</span>
+                <button class="nav-item" id="settingsBtn">
+                    <span class="material-symbols-outlined nav-icon">settings</span>
+                    <span class="text">Settings</span>
                 </button>
-                <button class="nav-btn theme-btn" id="themeToggleBtn" title="Toggle theme">
-                    <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
-                    <span class="nav-text">Theme</span>
+                <button class="nav-item theme-btn" id="themeToggleBtn">
+                    <span class="material-symbols-outlined nav-icon" id="themeIcon">light_mode</span>
+                    <span class="text">Theme</span>
                 </button>
             </div>
-        </nav>
+        </aside>
 
-        <!-- Main Chat Interface -->
-        <main class="main-content" id="mainContent">
-            <!-- Header section of chat -->
-            <header class="chat-header">
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-view">
+            <!-- HEADER -->
+            <header class="top-header">
                 <div class="header-left">
-                    <button class="nav-btn mobile-menu-btn" id="mobileMenuBtn" title="Menu">
+                    <button class="icon-btn mobile-menu-toggle" id="mobileMenuBtn">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
-                    <div class="model-dropdown" id="topModelDropdownBtn">
-                        <h2>Quantum AI</h2>
-                        <span class="material-symbols-outlined arrow">arrow_drop_down</span>
+                    <div class="model-selector" id="topModelDropdownBtn">
+                        <span class="model-name">Quantum AI</span>
+                        <span class="material-symbols-outlined drop-icon">arrow_drop_down</span>
                     </div>
                 </div>
-                <!-- Profile Section -->
-                <div class="header-right-actions">
-                    <div class="pro-badge">
-                        <div class="quantum-sparkle"></div>
-                        <span>Quantum AI Pro</span>
+
+                <div class="header-right">
+                    <div class="pro-tag">
+                        <div class="sparkle-icon"></div>
+                        <span class="pro-text">Quantum AI Pro</span>
                     </div>
-                    <div class="user-profile-container">
-                        <img src="https://ui-avatars.com/api/?name=User&background=333&color=fff&rounded=true"
-                            alt="Profile" class="avatar" id="userAvatar">
-                    </div>
+                    <img src="https://ui-avatars.com/api/?name=User&background=333&color=fff&rounded=true" alt="User"
+                        class="user-avatar" id="userAvatar">
+                </div>
             </header>
 
-            <!-- Scrollable chat thread area -->
-            <div class="chat-area">
+            <!-- CHAT / CONTENT CONTAINER -->
+            <div class="scrollable-content" id="scrollableContent">
 
-                <!-- Welcome/Greeting State (visible initially when empty) -->
-                <div class="welcome-screen" id="welcomeScreen">
-                    <div class="greeting">
-                        <span class="hello-text">Hello,</span>
-                        <span class="name-text">User</span>
+                <!-- Welcome Screen -->
+                <div class="welcome-container" id="welcomeScreen">
+                    <div class="greeting-box">
+                        <h1 class="gradient-text">Hello, User</h1>
+                        <h2 class="sub-greeting">How can I help you today?</h2>
                     </div>
-                    <h1 class="prompt-text">How can I help you today?</h1>
 
-                    <div class="suggestion-cards">
+                    <div class="suggestions-grid">
                         <div class="suggestion-card">
                             <p>Draft a polite email to decline an invitation</p>
                             <span class="material-symbols-outlined card-icon">draw</span>
@@ -119,117 +123,105 @@
                     </div>
                 </div>
 
-                <!-- Chat Thread (Hidden initially) -->
+                <!-- Chat Thread -->
                 <div class="chat-thread" id="chatThread" style="display: none;">
-                    <!-- Messages will be injected here via JS -->
+                    <!-- JS renders messages here -->
                 </div>
-
             </div>
 
-            <!-- Input Area Bottom Fix -->
-            <div class="input-container-wrapper">
-                <div class="input-container">
-                    <!-- Image upload button removed entirely as per request -->
-                    <!-- Simulated mic icon often seen in Quantum AI -->
-                    <button class="input-action-btn" id="micBtn" title="Use microphone">
+            <!-- INPUT AREA -->
+            <div class="input-area-wrapper">
+                <div class="input-bar">
+                    <button class="action-btn" id="micBtn" title="Use microphone">
                         <span class="material-symbols-outlined">mic</span>
                     </button>
 
-                    <div class="input-box">
-                        <div class="input-wrapper">
-                            <textarea id="promptInput" rows="1" placeholder="Enter a prompt here"></textarea>
-                        </div>
+                    <div class="textarea-wrapper">
+                        <textarea id="promptInput" rows="1" placeholder="Enter a prompt here"></textarea>
                     </div>
 
-                    <button class="input-action-btn submit-btn" id="sendBtn" title="Submit">
-                        <span class="material-symbols-outlined send-icon">send</span>
+                    <button class="action-btn submit-btn" id="sendBtn" title="Send message">
+                        <span class="material-symbols-outlined">send</span>
                     </button>
                 </div>
-
-                <p class="footer-disclaimer">
-                    Quantum AI can make mistakes. Check important info.
-                </p>
+                <p class="disclaimer">Quantum AI can make mistakes. Check important info.</p>
             </div>
         </main>
     </div>
 
-    <!-- Toast Notification Container -->
-    <div id="toastContainer" class="toast-container"></div>
+    <!-- TOAST -->
+    <div id="toastContainer" class="toast-wrapper"></div>
 
-    <!-- Settings Modal -->
-    <div class="modal-overlay" id="settingsModal" style="display: none;">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Quantum AI Settings</h3>
-                <button class="nav-btn close-modal-btn modal-close-btn">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <!-- Modals (Settings, Help, Activity) -->
+    <div class="modal-backdrop" id="settingsModal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-top">
+                <h3>Settings</h3>
+                <button class="icon-btn close-modal"><span class="material-symbols-outlined">close</span></button>
             </div>
-            <div class="modal-body">
-                <p class="modal-desc">Configure your Quantum AI experience.</p>
-                <div class="input-group">
-                    <label for="modelSelect">Select Model:</label>
-                    <select id="modelSelect">
-                        <option value="llama-3.3-70b-versatile">Meta Llama 3.3 70B (Recommended)</option>
-                        <option value="llama-3.1-8b-instant">Meta Llama 3.1 8B (Fast)</option>
-                        <option value="gemma2-9b-it">Google Gemma 2 9B</option>
+            <div class="modal-content">
+                <div class="form-group">
+                    <label>Select Model:</label>
+                    <select id="modelSelect" class="styled-select">
+                        <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (Recommended)</option>
+                        <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
+                        <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout 17B</option>
+                        <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick 17B</option>
+                        <option value="qwen/qwen3-32b">Qwen 3 32B</option>
+                        <option value="moonshotai/kimi-k2-instruct">Kimi K2 Instruct</option>
+                        <option value="groq/compound">Groq Compound Processing</option>
+                        <option value="openai/gpt-oss-120b">GPT OSS 120B</option>
                     </select>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="save-settings-btn" id="saveSettingsBtn">Save Settings</button>
+            <div class="modal-actions">
+                <button class="primary-btn" id="saveSettingsBtn">Save Settings</button>
             </div>
         </div>
     </div>
 
-    <!-- Help Modal -->
-    <div class="modal-overlay" id="helpModal" style="display: none;">
-        <div class="modal">
-            <div class="modal-header">
+    <div class="modal-backdrop" id="helpModal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-top">
                 <h3>Help Center</h3>
-                <button class="nav-btn close-modal-btn modal-close-btn">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+                <button class="icon-btn close-modal"><span class="material-symbols-outlined">close</span></button>
             </div>
-            <div class="modal-body">
-                <p class="modal-desc">Welcome to the Quantum AI replica interface.</p>
-                <ul class="help-list">
-                    <li><strong>Enter</strong> to send a message.</li>
-                    <li><strong>Shift + Enter</strong> for a new line.</li>
-                    <li>Toggle Light/Dark mode using the sun/moon icon.</li>
-                    <li>Add your API key via Settings to activate true AI responses.</li>
+            <div class="modal-content">
+                <ul>
+                    <li><strong>Enter</strong> to send message</li>
+                    <li><strong>Shift+Enter</strong> for new line</li>
+                    <li>Toggle Light/Dark mode in sidebar</li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <!-- Activity Modal -->
-    <div class="modal-overlay" id="activityModal" style="display: none;">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Recent Activity Log</h3>
-                <button class="nav-btn close-modal-btn modal-close-btn">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <div class="modal-backdrop" id="activityModal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-top">
+                <h3>Activity Log</h3>
+                <button class="icon-btn close-modal"><span class="material-symbols-outlined">close</span></button>
             </div>
-            <div class="modal-body activity-log" id="activityLogContent">
-                <!-- Populated by JS -->
-                <p class="modal-desc">Activity feed initialized.</p>
+            <div class="modal-content" id="activityLogContent">
+                <!-- JS populated -->
             </div>
         </div>
     </div>
 
-    <!-- Simple loading state template for JS injection -->
     <template id="loadingTemplate">
-        <div class="chat-message bot loading-state">
-            <div class="bot-avatar quantum-sparkle-spin"></div>
-            <div class="loading-dots">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+        <div class="message-row bot-row loading-row">
+            <div class="bot-avatar sparkle-spin"></div>
+            <div class="typing-indicator">
+                <span></span><span></span><span></span>
             </div>
         </div>
     </template>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js"></script>
 
     <script src="script.js"></script>
 </body>
